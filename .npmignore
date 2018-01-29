@@ -1,9 +1,7 @@
 *
 !cli/*
 !packages/*
-!dist/
 !dist/*
-!dist/stitching/*
 !package.json
 !*.md
 !*.png
