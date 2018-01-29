@@ -1,5 +1,5 @@
 import * as r from 'rethinkdb';
-import { getConfig } from '../utils/getConfig';
+import { getConfig } from '../../utils/getConfig';
 
 export const rethinkdb = async (env: any): Promise<any> => {
   let baseConfig = {

@@ -1,4 +1,4 @@
-import * as fetch from 'node-fetch';
+import fetch from 'node-fetch';
 import { stringify } from 'querystring';
 
 export const rest = async ({ REST_ENDPOINT }: any): Promise<any> => {

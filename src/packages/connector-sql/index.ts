@@ -1,11 +1,11 @@
 import { Sequelize } from 'sequelize-typescript';
-import { getConfig } from '../utils/getConfig';
+import { getConfig } from '../../utils/getConfig';
 
 export const sqldb = async (env: any): Promise<Sequelize> => {
   const baseConfig = {
-    db: env.SQL_DB || 'test',
-    user: env.SQL_USER || 'root',
-    pass: env.SQL_PASS || 'root',
+    database: env.SQL_DB || 'test',
+    username: env.SQL_USER || 'root',
+    password: env.SQL_PASS || 'root',
     host: env.SQL_HOST || 'localhost',
     port: env.SQL_PORT || 3306
   };
@@ -36,5 +36,12 @@ export const sqldb = async (env: any): Promise<Sequelize> => {
     }
   }
 
-  return new Sequelize(baseConfig);
+  return new Sequelize({
+    ... baseConfig,
+    ... {
+      modelPaths: [
+        `${env.BASE_PATH}/models`
+      ]
+    }
+  });
 };
