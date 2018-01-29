@@ -1,0 +1,12 @@
+{
+  "name": "grial-example-with-custom-config",
+  "alias": "grial-example-with-custom-config.now.sh",
+  "public": true,
+  "env": {
+    "HOST": "localhost",
+    "PORT": 3000,
+    "PUBLIC_HOST": "grial-example-with-custom-config.now.sh",
+    "PUBLIC_PORT": 443,
+    "SSL_ENABLED": true
+  }
+}

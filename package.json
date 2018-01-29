@@ -1,0 +1,49 @@
+{
+  "name": "@gd-grial/core",
+  "version": "1.0.0",
+  "description": "A Node.js framework to create GraphQL APIs",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "typescript": {
+    "definition": "dist/index.d.ts"
+  },
+  "author": "Jens Kolberg <jens.kolberg@gamesdynamics.com>",
+  "license": "MIT",
+  "scripts": {
+    "compile": "tsc",
+    "typings": "typings install",
+    "pretest": "npm run clean && npm run compile",
+    "watch": "tsc -w",
+    "prepublishOnly": "npm run compile",
+    "prettier": "prettier --trailing-comma all --single-quote --write 'src/**/*.ts'",
+    "release": "standard-version"
+  },
+  "bin": {
+    "grial": "./cli/grial"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GD-Aichi/gd-grial.git"
+  },
+  "dependencies": {
+    "colors": "^1.1.2",
+    "commander": "^2.13.0",
+    "dotenv": "^4.0.0",
+    "file-exists": "^5.0.1",
+    "graphql": "^0.12.3",
+    "graphql-server-core": "^1.3.2",
+    "graphql-server-module-graphiql": "^1.3.2",
+    "graphql-tools": "^2.19.0",
+    "micro": "^9.1.0",
+    "subscriptions-transport-ws": "^0.9.5"
+  },
+  "devDependencies": {
+    "@types/graphql": "^0.12.3",
+    "@types/micro": "^7.3.1",
+    "@types/node": "^9.4.0",
+    "@types/ws": "^4.0.0",
+    "prettier": "^1.10.2",
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.2"
+  }
+}

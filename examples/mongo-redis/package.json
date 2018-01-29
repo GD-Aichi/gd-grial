@@ -1,0 +1,15 @@
+{
+  "name": "grial-redis",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "grial start"
+  },
+  "dependencies": {
+    "@grial/cli": "latest",
+    "@grial/connector-mongodb": "latest",
+    "@grial/connector-redis": "latest",
+    "@grial/server": "latest"
+  }
+}
