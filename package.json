@@ -2,10 +2,10 @@
   "name": "@gd-grial/server",
   "version": "1.0.0",
   "description": "A Node.js framework to create GraphQL APIs",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "src/index.js",
+  "typings": "src/index.d.ts",
   "typescript": {
-    "definition": "dist/index.d.ts"
+    "definition": "src/index.d.ts"
   },
   "author": "Jens Kolberg <jens.kolberg@gamesdynamics.com>",
   "license": "MIT",

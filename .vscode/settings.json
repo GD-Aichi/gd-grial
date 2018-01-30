@@ -12,6 +12,12 @@
   "prettier.printWidth": 110,
   "files.exclude": {
     "**/.git": true,
+    "packages/**/.js": true,
+    "packages/**/.d.ts": true,
+    "packages/**/.js.map": true,
+    "src/**/.js": true,
+    "src/**/.d.ts": true,
+    "src/**/.js.map": true,
     "**/.DS_Store": true,
     "node_modules": true,
     "test-lib": true,
