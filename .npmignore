@@ -1,6 +1,7 @@
 *
 !cli/*
 !packages/**/*.*
+!src/*.*
 !src/**/*.*
 !package.json
 !*.md

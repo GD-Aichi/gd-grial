@@ -15,6 +15,7 @@
     "removeComments": false
   },
   "include": [
+    "src/index.ts",
     "src/**/*",
     "packages/**/*"
   ],
