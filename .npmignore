@@ -1,8 +1,14 @@
 *
 !cli/*
-!packages/**/*.*
-!src/*.*
-!src/**/*.*
+!packages/**/*.js
+!packages/**/*.d.ts
+!packages/**/*.js.map
+!src/*.js
+!src/*.d.ts
+!src/*.js.map
+!src/**/*.js
+!src/**/*.d.ts
+!src/**/*.js.map
 !package.json
 !*.md
 !*.png
