@@ -1,4 +1,4 @@
-# @grial/connector-mongodb
+# @gd-grial/connector-mongodb
 Grial datasource connector for MongoDB.
 
 ## Required enviroment variables
@@ -12,13 +12,13 @@ Grial datasource connector for MongoDB.
 Install it
 
 ```bash
-npm i @grial/connector-mongodb
+npm i @gd-grial/connector-mongodb
 ```
 
 Add it to your `connectors.js` files
 
 ```js
-exports.mongodb = require('@grial/connector-mongodb')
+exports.mongodb = require('@gd-grial/connector-mongodb')
 ```
 
 ## API

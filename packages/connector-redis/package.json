@@ -1,0 +1,13 @@
+{
+  "name": "@gd-grial/connector-redis",
+  "version": "1.0.1",
+  "description": "The Grial connector for Redis databases",
+  "main": "index.js",
+  "keywords": ["grial", "grial-connector", "redis"],
+  "dependencies": {
+    "redis": "^2.7.1"
+  },
+  "files": [
+    "index.js"
+  ]
+}

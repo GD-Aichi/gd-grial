@@ -1,4 +1,4 @@
-# @grial/connector-rest
+# @gd-grial/connector-rest
 Grial datasource connector for wrapping Rest APIs.
 
 ## Required enviroment variables
@@ -8,13 +8,13 @@ Grial datasource connector for wrapping Rest APIs.
 Install it
 
 ```bash
-npm i @grial/connector-rest
+npm i @gd-grial/connector-rest
 ```
 
 Add it to your `connectors.js` files
 
 ```js
-exports.rest = require('@grial/connector-rest')
+exports.rest = require('@gd-grial/connector-rest')
 ```
 
 ## API

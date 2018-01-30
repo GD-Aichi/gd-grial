@@ -1,0 +1,13 @@
+{
+  "name": "@gd-grial/connector-mongodb",
+  "version": "1.0.1",
+  "description": "The Grial connector for MongoDB databases",
+  "main": "index.js",
+  "keywords": ["grial", "grial-connector", "mongodb"],
+  "dependencies": {
+    "mongodb": "^2.2.29"
+  },
+  "files": [
+    "index.js"
+  ]
+}

@@ -6,17 +6,10 @@ import { parse, UrlWithParsedQuery } from 'url';
 import { makeExecutableSchema } from 'graphql-tools';
 import { runHttpQuery } from 'graphql-server-core';
 import { resolveGraphiQLString } from 'graphql-server-module-graphiql';
-// const { makeExecutableSchema } = require('graphql-tools')
-//const { runHttpQuery } = require('graphql-server-core')
-//const GraphiQL = require('graphql-server-module-graphiql')
 import { SubscriptionServer } from 'subscriptions-transport-ws';
 import { execute, subscribe } from 'graphql';
 import { json } from 'micro';
 import { instantiate, mergeInstances, getConfig } from '../utils';
-// const { SubscriptionServer } = require('subscriptions-transport-ws')
-// const { execute, subscribe } = require('graphql')
-// const { json } = require('micro')
-// const { instantiate, mergeInstances, getConfig } = require('@grial/utils')
 
 // API layer
 import { getResolvers } from './api/resolvers';

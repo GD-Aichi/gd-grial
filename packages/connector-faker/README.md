@@ -1,4 +1,4 @@
-# @grial/connector-faker
+# @gd-grial/connector-faker
 Grial datasource connector for faker.
 
 ## Required enviroment variables
@@ -9,13 +9,13 @@ Grial datasource connector for faker.
 Install it
 
 ```bash
-npm i @grial/connector-faker
+npm i @gd-grial/connector-faker
 ```
 
 Add it to your `connectors.js` files
 
 ```js
-exports.faker = require('@grial/connector-faker')
+exports.faker = require('@gd-grial/connector-faker')
 ```
 
 ## API

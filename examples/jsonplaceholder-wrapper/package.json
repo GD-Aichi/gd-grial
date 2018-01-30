@@ -11,9 +11,9 @@
     "postdeploy": "npm run alias"
   },
   "dependencies": {
-    "@grial/cli": "latest",
-    "@grial/connector-rest": "latest",
-    "@grial/server": "latest",
+    "@gd-grial/cli": "latest",
+    "@gd-grial/connector-rest": "latest",
+    "@gd-grial/server": "latest",
     "dataloader": "latest"
   },
   "devDependencies": {

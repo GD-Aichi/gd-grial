@@ -12,9 +12,12 @@
     "noUnusedLocals": true,
     "sourceMap": true,
     "declaration": true,
-    "rootDir": "./src",
     "outDir": "./dist",
     "removeComments": false
   },
+  "include": [
+    "src/**/*",
+    "packages/**/*"
+  ],
   "exclude": ["node_modules", "dist"]
 }

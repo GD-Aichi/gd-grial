@@ -1,4 +1,4 @@
-# @grial/server
+# @gd-grial/server
 The GraphQL server module of Grial
 
 ## Required enviroment variables
@@ -15,10 +15,10 @@ The GraphQL server module of Grial
 Install it
 
 ```bash
-npm i @grial/server
+npm i @gd-grial/server
 ```
 
-Then run `@grial/cli`
+Then run `@gd-grial/cli`
 
 ```bash
 grial start
@@ -27,10 +27,10 @@ grial start
 It will load it and use it to start your API server.
 
 ## Custom usage
-You can avoid `@grial/cli` and just create a `server.js` file with a code similar to this.
+You can avoid `@gd-grial/cli` and just create a `server.js` file with a code similar to this.
 
 ```js
-const Grial = require('@grial/server');
+const Grial = require('@gd-grial/server');
 const { createServer } = require('http');
 
 const api = new Grial(process.env);

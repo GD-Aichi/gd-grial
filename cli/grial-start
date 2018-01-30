@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 require('dotenv').config()
 const colors = require('colors')
-const Grial = require('@grial/server')
+const Grial = require('@gd-grial/server')
 
 module.exports = async() => {
   try {

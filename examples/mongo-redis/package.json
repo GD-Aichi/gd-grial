@@ -7,9 +7,9 @@
     "start": "grial start"
   },
   "dependencies": {
-    "@grial/cli": "latest",
-    "@grial/connector-mongodb": "latest",
-    "@grial/connector-redis": "latest",
-    "@grial/server": "latest"
+    "@gd-grial/cli": "latest",
+    "@gd-grial/connector-mongodb": "latest",
+    "@gd-grial/connector-redis": "latest",
+    "@gd-grial/server": "latest"
   }
 }

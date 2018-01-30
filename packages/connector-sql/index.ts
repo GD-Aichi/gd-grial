@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize-typescript';
-import { getConfig } from '../../utils/getConfig';
+import { getConfig } from '../../src/utils/getConfig';
 
 export const sqldb = async (env: any): Promise<Sequelize> => {
   const baseConfig = {

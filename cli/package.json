@@ -1,12 +1,8 @@
 {
-  "name": "@grial/cli",
+  "name": "@gd-grial/cli",
   "version": "1.3.0",
   "description": "The Grial CLI used to start the API",
-  "main": "grial",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sergiodxa/grial.git"
-  },
+  "main": "gd-grial",
   "keywords": [
     "grial",
     "connector",
@@ -28,7 +24,7 @@
     "dotenv": "^4.0.0"
   },
   "peerDependencies": {
-    "@grial/server": "*"
+    "@gd-grial/server": "*"
   },
   "files": [
     "utils/check-peer-deps.js",

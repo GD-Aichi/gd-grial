@@ -1,4 +1,4 @@
-# @grial/connector-rethinkdb
+# @gd-grial/connector-rethinkdb
 Grial datasource connector for RethinkDB.
 
 ## Required enviroment variables
@@ -12,13 +12,13 @@ Grial datasource connector for RethinkDB.
 Install it
 
 ```bash
-npm i @grial/connector-rethinkdb
+npm i @gd-grial/connector-rethinkdb
 ```
 
 Add it to your `connectors.js` files
 
 ```js
-exports.rethinkdb = require('@grial/connector-rethinkdb')
+exports.rethinkdb = require('@gd-grial/connector-rethinkdb')
 ```
 
 ## Configuration

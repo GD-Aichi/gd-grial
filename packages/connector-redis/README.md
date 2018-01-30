@@ -1,4 +1,4 @@
-# @grial/connector-redis
+# @gd-grial/connector-redis
 Grial datasource connector for Redis.
 
 ## Required enviroment variables
@@ -9,13 +9,13 @@ Grial datasource connector for Redis.
 Install it
 
 ```bash
-npm i @grial/connector-redis
+npm i @gd-grial/connector-redis
 ```
 
 Add it to your `connectors.js` files
 
 ```js
-exports.redis = require('@grial/connector-redis')
+exports.redis = require('@gd-grial/connector-redis')
 ```
 
 ## API

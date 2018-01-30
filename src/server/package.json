@@ -1,21 +1,11 @@
 {
-  "name": "@grial/server",
+  "name": "@gd-grial/server",
   "version": "1.5.1",
   "description": "The Grial server",
   "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sergiodxa/grial.git"
-  },
   "keywords": ["grial", "grial-server"],
-  "author": "Sergio Daniel Xalambrí <sergiodxa@gmail.com> (https://sergio.now.sh/)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/sergiodxa/grial/issues"
-  },
-  "homepage": "https://github.com/sergiodxa/grial#readme",
   "dependencies": {
-    "@grial/utils": "^1.0.0",
+    "@gd-grial/utils": "^1.0.0",
     "file-exists": "^4.0.0",
     "graphql": "^0.10.3",
     "graphql-server-core": "^1.0.2",

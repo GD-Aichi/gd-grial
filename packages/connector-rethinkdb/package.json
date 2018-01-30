@@ -1,0 +1,12 @@
+{
+  "name": "@gd-grial/connector-rethinkdb",
+  "version": "1.0.0",
+  "description": "The Grial connector for RethinkDB databases",
+  "main": "index.js",
+  "keywords": ["grial", "grial-connector", "rethinkdb"],
+  "dependencies": {
+    "@gd-grial/utils": "^1.0.0",
+    "rethinkdb": "^2.2.29"
+  },
+  "files": ["index.js"]
+}

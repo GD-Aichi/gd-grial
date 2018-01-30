@@ -1,5 +1,5 @@
 {
-  "name": "@gd-grial/core",
+  "name": "@gd-grial/server",
   "version": "1.0.0",
   "description": "A Node.js framework to create GraphQL APIs",
   "main": "dist/index.js",

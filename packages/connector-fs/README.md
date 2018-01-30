@@ -1,4 +1,4 @@
-# @grial/connector-fs
+# @gd-grial/connector-fs
 Grial datasource connector for the file system.
 
 ## Required enviroment variables
@@ -8,13 +8,13 @@ None
 Install it
 
 ```bash
-npm i @grial/connector-fs
+npm i @gd-grial/connector-fs
 ```
 
 Add it to your `connectors.js` files
 
 ```js
-exports.fs = require('@grial/connector-fs')
+exports.fs = require('@gd-grial/connector-fs')
 ```
 
 ## API
