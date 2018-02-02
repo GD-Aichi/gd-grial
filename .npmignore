@@ -1,6 +1,6 @@
 *
 !cli/*
-+!dist/**/*.*
+!dist/*
 !package.json
 !*.md
 !*.png
