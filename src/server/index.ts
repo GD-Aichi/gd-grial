@@ -261,7 +261,7 @@ export class Grial {
           response.write(data);
         } catch (error) {
           if (error.headers) {
-            Object.entries(error.headers).forEach(([name, value]) => {
+            Object.entries(error.headers).forEach(([name, value]: [string, string]) => {
               response.setHeader(name, value);
             });
           }
