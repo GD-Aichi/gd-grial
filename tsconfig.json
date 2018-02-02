@@ -11,6 +11,8 @@
     "emitDecoratorMetadata": true,
     "noUnusedLocals": true,
     "sourceMap": true,
+    "rootDir": "./src",
+    "outDir": "./dist",
     "declaration": true,
     "removeComments": false
   },
