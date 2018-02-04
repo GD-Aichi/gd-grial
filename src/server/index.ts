@@ -28,11 +28,13 @@ import { getServices } from './app/services';
  */
 export class Grial {
 
+  public context: any;
+
+  public schema: any;
+
   private env: any;
 
   private config: any;
-
-  private schema: any;
 
   private connectors: any;
 
@@ -107,6 +109,14 @@ export class Grial {
 
     // get loaders
     this.loaders = await getLoaders(BASE_PATH);
+
+    this.context = {
+      connectors: this.connectors,
+      models: this.models,
+      loaders: this.loaders,
+      utilities: this.utilities,
+      services: this.services
+    };
   }
 
   /**
