@@ -1,6 +1,7 @@
 // native
 import { createServer, IncomingMessage, ServerResponse, Server } from 'http';
 import { parse, UrlWithParsedQuery } from 'url';
+import * as jwt from 'jsonwebtoken';
 
 // packages
 import { makeExecutableSchema } from 'graphql-tools';
@@ -9,11 +10,11 @@ import { resolveGraphiQLString } from 'graphql-server-module-graphiql';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
 import { execute, subscribe } from 'graphql';
 import { json } from 'micro';
-import { instantiate, mergeInstances, getConfig } from '../utils';
 
 // API layer
 import { getResolvers } from './api/resolvers';
 import { getSchema } from './api/schema';
+import { instantiate, mergeInstances, getConfig, getAuth, getPrivateKey } from '../utils';
 
 // Business logic layer
 import { getConnectors } from './app/connectors';
@@ -36,6 +37,8 @@ export class Grial {
 
   private config: any;
 
+  private auth: any;
+
   private connectors: any;
 
   private models: any;
@@ -45,6 +48,8 @@ export class Grial {
   private services: any;
 
   private loaders: any;
+
+  private SECRET: string;
 
   constructor(env: any) {
     this.env = env;
@@ -68,6 +73,15 @@ export class Grial {
     }
     if ('subscriptionConfig' in this.config) {
       console.log('Custom `subscriptionConfig` found in grial.config.');
+    }
+
+    // Grial auth
+    this.auth = await getAuth(BASE_PATH);
+    if (this.auth.createToken && this.auth.refreshToken) {
+      this.SECRET = await getPrivateKey(BASE_PATH);
+      if (this.SECRET) {
+        console.log('Auth found.');
+      }
     }
 
     // create schema
@@ -240,6 +254,31 @@ export class Grial {
     return { schema, execute, subscribe };
   }
 
+  private async addUser(request: IncomingMessage, response: ServerResponse, next: Function = null) {
+    const token: string = <string>request.headers['x-token'];
+
+    if (token) {
+      try {
+        const { user } = <any>jwt.verify(token, this.SECRET);
+        (<any>request).user = user;
+      } catch (err) {
+        const refreshToken = <string>request.headers['x-refresh-token'];
+        const newTokens = await this.auth.refreshToken(
+          token,
+          refreshToken,
+          this.models,
+          this.SECRET
+        );
+        if (newTokens.token && newTokens.refreshToken) {
+          response.setHeader('Access-Control-Expose-Headers', ['x-token', 'x-refresh-token']);
+          response.setHeader('x-token', newTokens.token);
+          response.setHeader('x-refresh-token', newTokens.refreshToken);
+        }
+        (<any>request).user = newTokens.user;
+      }
+    }
+  }
+
   /**
    * Create the HTTP request handler
    * @return {Function} The HTTP request handler
@@ -261,6 +300,11 @@ export class Grial {
 
       // handle GraphQL queries
       if (formatedURL === graphql) {
+        // add auth
+        if (this.SECRET) {
+          await this.addUser(request, response);
+        }
+
         try {
           const data = await runHttpQuery([request, response], {
             method: request.method,
