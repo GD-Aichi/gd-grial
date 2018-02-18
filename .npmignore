@@ -1,6 +1,7 @@
 *
 !cli/*
 !dist/**/*.*
+!src/**/*.ts
 !package.json
 !*.md
 !*.png

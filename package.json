@@ -15,7 +15,6 @@
     "pretest": "npm run clean && npm run compile",
     "watch": "tsc -w",
     "prepublishOnly": "npm run compile",
-    "prepare": "npm run compile",
     "prettier": "prettier --trailing-comma all --single-quote --write 'src/**/*.ts'",
     "release": "standard-version"
   },

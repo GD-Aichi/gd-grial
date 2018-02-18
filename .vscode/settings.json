@@ -22,7 +22,7 @@
     "node_modules": true,
     "test-lib": true,
     "lib": true,
-    "dist": true,
+    "dist": false,
     "coverage": true,
     "npm": true
   },
