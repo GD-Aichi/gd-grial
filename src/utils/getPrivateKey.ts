@@ -10,7 +10,7 @@ const readFilePromis = promisify(readFile);
  */
 export const getPrivateKey = async (BASE_PATH = '.'): Promise<string> => {
   try {
-    return await readFilePromis(resolve(`${BASE_PATH}/private.key`), 'utf8');
+    return await readFilePromis(resolve(`${BASE_PATH}/private.pem`), 'utf8');
   } catch (error) {
     if (error.code === 'MODULE_NOT_FOUND') {
       return;

@@ -129,7 +129,8 @@ export class Grial {
       models: this.models,
       loaders: this.loaders,
       utilities: this.utilities,
-      services: this.services
+      services: this.services,
+      SECRET: this.SECRET
     };
   }
 
@@ -163,7 +164,7 @@ export class Grial {
    * @return {Object} The GraphQL options
    */
   public async getGraphQLOptions(request: IncomingMessage): Promise<any> {
-    const { schema, models, utilities, services, connectors, config, env } = this;
+    const { schema, models, utilities, services, connectors, config, env, SECRET } = this;
 
     const loaders = await this.getLoaders(request);
 
@@ -185,7 +186,12 @@ export class Grial {
           utilities,
           services,
           loaders,
-          env
+          env,
+          SECRET,
+          auth: {
+            isAuthenticated: !!(<any>request).user,
+            user: (<any>request).user
+          }
         })
       );
     }
