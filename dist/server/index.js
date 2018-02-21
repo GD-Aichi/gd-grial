@@ -75,21 +75,21 @@ class Grial {
             this.connectors = instancedConnectors;
             // create models
             const models = yield models_1.getModels(BASE_PATH);
-            const modelParams = Object.assign({}, this.env, instancedConnectors);
+            const modelParams = Object.assign({}, { env: this.env }, instancedConnectors);
             const instancedModels = (yield Promise.all(Object.entries(models).map(utils_1.instantiate(modelParams)))).reduce(utils_1.mergeInstances, {});
             this.models = instancedModels;
+            // get loaders
+            this.loaders = yield loaders_1.getLoaders(BASE_PATH);
             // create utility
             const utilities = yield utilities_1.getUtilities(BASE_PATH);
-            const utilityParams = Object.assign({}, this.env, instancedConnectors, instancedModels);
+            const utilityParams = Object.assign({}, { env: this.env }, instancedConnectors, instancedModels, this.loaders);
             const instancedUtility = (yield Promise.all(Object.entries(utilities).map(utils_1.instantiate(utilityParams)))).reduce(utils_1.mergeInstances, {});
             this.utilities = instancedUtility;
             // create service
             const services = yield services_1.getServices(BASE_PATH);
-            const servicesParams = Object.assign({}, this.env, instancedConnectors, instancedModels, instancedUtility);
+            const servicesParams = Object.assign({}, { env: this.env }, instancedConnectors, instancedModels, instancedUtility, this.loaders);
             const instancedServices = (yield Promise.all(Object.entries(services).map(utils_1.instantiate(servicesParams)))).reduce(utils_1.mergeInstances, {});
             this.services = instancedServices;
-            // get loaders
-            this.loaders = yield loaders_1.getLoaders(BASE_PATH);
             this.context = {
                 connectors: this.connectors,
                 models: this.models,
@@ -162,8 +162,8 @@ class Grial {
      */
     getLoaders(request) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { models, utilities, services, connectors, env, loaders } = this;
-            const loaderParams = Object.assign({}, request, env, connectors, models, utilities, services);
+            const { models, connectors, env, loaders } = this;
+            const loaderParams = Object.assign({}, request, env, connectors, models);
             return (yield Promise.all(Object.entries(loaders).map(utils_1.instantiate(loaderParams)))).reduce(utils_1.mergeInstances, {});
         });
     }
