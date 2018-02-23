@@ -80,14 +80,15 @@ class Grial {
             this.models = instancedModels;
             // get loaders
             this.loaders = yield loaders_1.getLoaders(BASE_PATH);
+            const instancedLoaders = this.getLoaders();
             // create utility
             const utilities = yield utilities_1.getUtilities(BASE_PATH);
-            const utilityParams = Object.assign({}, { env: this.env }, instancedConnectors, instancedModels, this.loaders);
+            const utilityParams = Object.assign({}, { env: this.env }, instancedConnectors, instancedModels, instancedLoaders);
             const instancedUtility = (yield Promise.all(Object.entries(utilities).map(utils_1.instantiate(utilityParams)))).reduce(utils_1.mergeInstances, {});
             this.utilities = instancedUtility;
             // create service
             const services = yield services_1.getServices(BASE_PATH);
-            const servicesParams = Object.assign({}, { env: this.env }, instancedConnectors, instancedModels, instancedUtility, this.loaders);
+            const servicesParams = Object.assign({}, { env: this.env }, instancedConnectors, instancedModels, instancedUtility, instancedLoaders);
             const instancedServices = (yield Promise.all(Object.entries(services).map(utils_1.instantiate(servicesParams)))).reduce(utils_1.mergeInstances, {});
             this.services = instancedServices;
             this.context = {

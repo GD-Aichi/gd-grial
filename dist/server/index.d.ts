@@ -41,7 +41,7 @@ export declare class Grial {
      * @param  {Object} request HTTP request
      * @return {Object}         Loaders instances
      */
-    private getLoaders(request);
+    private getLoaders(request?);
     /**
      * Get GraphiQL configuration options
      * @return {Object} GraphiQL options
