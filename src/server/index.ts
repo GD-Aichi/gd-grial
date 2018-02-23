@@ -107,10 +107,11 @@ export class Grial {
 
     // get loaders
     this.loaders = await getLoaders(BASE_PATH);
+    const instancedLoaders = this.getLoaders();
 
     // create utility
     const utilities = await getUtilities(BASE_PATH);
-    const utilityParams = Object.assign({}, {env: this.env}, instancedConnectors, instancedModels, this.loaders);
+    const utilityParams = Object.assign({}, {env: this.env}, instancedConnectors, instancedModels, instancedLoaders);
     const instancedUtility = (await Promise.all(
       Object.entries(utilities).map(<any>instantiate(utilityParams))
     )).reduce(mergeInstances, {});
@@ -118,7 +119,7 @@ export class Grial {
 
     // create service
     const services = await getServices(BASE_PATH);
-    const servicesParams = Object.assign({}, {env: this.env}, instancedConnectors, instancedModels, instancedUtility, this.loaders);
+    const servicesParams = Object.assign({}, {env: this.env}, instancedConnectors, instancedModels, instancedUtility, instancedLoaders);
     const instancedServices = (await Promise.all(
       Object.entries(services).map(<any>instantiate(servicesParams))
     )).reduce(mergeInstances, {});
@@ -204,7 +205,7 @@ export class Grial {
    * @param  {Object} request HTTP request
    * @return {Object}         Loaders instances
    */
-  private async getLoaders(request: IncomingMessage) {
+  private async getLoaders(request?: IncomingMessage) {
     const { models, connectors, env, loaders } = this;
     const loaderParams = Object.assign({}, request, env, connectors, models);
     return (await Promise.all(Object.entries(loaders).map(<any>instantiate(loaderParams)))).reduce(
