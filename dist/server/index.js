@@ -14,6 +14,7 @@ const micro_1 = require("micro");
 // API layer
 const resolvers_1 = require("./api/resolvers");
 const schema_1 = require("./api/schema");
+const directiveResolvers_1 = require("./api/directiveResolvers");
 const utils_1 = require("../utils");
 // Business logic layer
 const connectors_1 = require("./app/connectors");
@@ -58,7 +59,8 @@ class Grial {
         // create schema
         const resolvers = await resolvers_1.getResolvers(BASE_PATH);
         const typeDefs = await schema_1.getSchema(BASE_PATH);
-        const schema = graphql_tools_1.makeExecutableSchema({ typeDefs, resolvers });
+        const directiveResolvers = await directiveResolvers_1.getDirectiveResolvers(BASE_PATH);
+        const schema = graphql_tools_1.makeExecutableSchema({ typeDefs, resolvers, directiveResolvers });
         this.schema = schema;
         // create connectors
         const connectors = await connectors_1.getConnectors(BASE_PATH);
