@@ -1,12 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 // native
 const http_1 = require("http");
@@ -42,64 +34,61 @@ class Grial {
      * @param  {Object} env The app environment variables
      * @return {Object}     The schema, connectors and models
      */
-    prepare() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { BASE_PATH = '.' } = this.env;
-            // Grial config
-            this.config = yield utils_1.getConfig(BASE_PATH);
-            if ('graphqlConfig' in this.config) {
-                console.log('Custom `graphqlConfig` found in grial.config.');
+    async prepare() {
+        const { BASE_PATH = '.' } = this.env;
+        // Grial config
+        this.config = await utils_1.getConfig(BASE_PATH);
+        if ('graphqlConfig' in this.config) {
+            console.log('Custom `graphqlConfig` found in grial.config.');
+        }
+        if ('graphiqlConfig' in this.config) {
+            console.log('Custom `graphiqlConfig` found in grial.config.');
+        }
+        if ('subscriptionConfig' in this.config) {
+            console.log('Custom `subscriptionConfig` found in grial.config.');
+        }
+        // Grial auth
+        this.auth = await utils_1.getAuth(BASE_PATH);
+        if (this.auth.createToken && this.auth.refreshToken) {
+            this.SECRET = await utils_1.getPrivateKey(BASE_PATH);
+            if (this.SECRET) {
+                console.log('Auth found.');
             }
-            if ('graphiqlConfig' in this.config) {
-                console.log('Custom `graphiqlConfig` found in grial.config.');
-            }
-            if ('subscriptionConfig' in this.config) {
-                console.log('Custom `subscriptionConfig` found in grial.config.');
-            }
-            // Grial auth
-            this.auth = yield utils_1.getAuth(BASE_PATH);
-            if (this.auth.createToken && this.auth.refreshToken) {
-                this.SECRET = yield utils_1.getPrivateKey(BASE_PATH);
-                if (this.SECRET) {
-                    console.log('Auth found.');
-                }
-            }
-            // create schema
-            const resolvers = yield resolvers_1.getResolvers(BASE_PATH);
-            const typeDefs = yield schema_1.getSchema(BASE_PATH);
-            const schema = graphql_tools_1.makeExecutableSchema({ typeDefs, resolvers });
-            this.schema = schema;
-            // create connectors
-            const connectors = yield connectors_1.getConnectors(BASE_PATH);
-            const instancedConnectors = (yield Promise.all(Object.entries(connectors).map(utils_1.instantiate(this.env)))).reduce(utils_1.mergeInstances, {});
-            this.connectors = instancedConnectors;
-            // create models
-            const models = yield models_1.getModels(BASE_PATH);
-            const modelParams = Object.assign({}, { env: this.env }, instancedConnectors);
-            const instancedModels = (yield Promise.all(Object.entries(models).map(utils_1.instantiate(modelParams)))).reduce(utils_1.mergeInstances, {});
-            this.models = instancedModels;
-            // get loaders
-            this.loaders = yield loaders_1.getLoaders(BASE_PATH);
-            const instancedLoaders = this.getLoaders();
-            // create utility
-            const utilities = yield utilities_1.getUtilities(BASE_PATH);
-            const utilityParams = Object.assign({}, { env: this.env }, instancedConnectors, instancedModels, instancedLoaders);
-            const instancedUtility = (yield Promise.all(Object.entries(utilities).map(utils_1.instantiate(utilityParams)))).reduce(utils_1.mergeInstances, {});
-            this.utilities = instancedUtility;
-            // create service
-            const services = yield services_1.getServices(BASE_PATH);
-            const servicesParams = Object.assign({}, { env: this.env }, instancedConnectors, instancedModels, instancedUtility, instancedLoaders);
-            const instancedServices = (yield Promise.all(Object.entries(services).map(utils_1.instantiate(servicesParams)))).reduce(utils_1.mergeInstances, {});
-            this.services = instancedServices;
-            this.context = {
-                connectors: this.connectors,
-                models: this.models,
-                loaders: this.loaders,
-                utilities: this.utilities,
-                services: this.services,
-                SECRET: this.SECRET
-            };
-        });
+        }
+        // create schema
+        const resolvers = await resolvers_1.getResolvers(BASE_PATH);
+        const typeDefs = await schema_1.getSchema(BASE_PATH);
+        const schema = graphql_tools_1.makeExecutableSchema({ typeDefs, resolvers });
+        this.schema = schema;
+        // create connectors
+        const connectors = await connectors_1.getConnectors(BASE_PATH);
+        const instancedConnectors = (await Promise.all(Object.entries(connectors).map(utils_1.instantiate(this.env)))).reduce(utils_1.mergeInstances, {});
+        this.connectors = instancedConnectors;
+        // create models
+        const models = await models_1.getModels(BASE_PATH);
+        const modelParams = Object.assign({}, { env: this.env }, instancedConnectors);
+        const instancedModels = (await Promise.all(Object.entries(models).map(utils_1.instantiate(modelParams)))).reduce(utils_1.mergeInstances, {});
+        this.models = instancedModels;
+        // create utility
+        const utilities = await utilities_1.getUtilities(BASE_PATH);
+        const utilityParams = Object.assign({}, { env: this.env }, instancedConnectors, instancedModels);
+        const instancedUtility = (await Promise.all(Object.entries(utilities).map(utils_1.instantiate(utilityParams)))).reduce(utils_1.mergeInstances, {});
+        this.utilities = instancedUtility;
+        // create service
+        const services = await services_1.getServices(BASE_PATH);
+        const servicesParams = Object.assign({}, { env: this.env }, instancedConnectors, instancedModels, instancedUtility);
+        const instancedServices = (await Promise.all(Object.entries(services).map(utils_1.instantiate(servicesParams)))).reduce(utils_1.mergeInstances, {});
+        this.services = instancedServices;
+        // get loaders
+        this.loaders = await loaders_1.getLoaders(BASE_PATH);
+        this.context = {
+            connectors: this.connectors,
+            models: this.models,
+            loaders: this.loaders,
+            utilities: this.utilities,
+            services: this.services,
+            SECRET: this.SECRET
+        };
     }
     /**
      * Run a simple HTTP and WS (subscriptions) server
@@ -127,46 +116,42 @@ class Grial {
      * Get GraphQL request options
      * @return {Object} The GraphQL options
      */
-    getGraphQLOptions(request) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { schema, models, utilities, services, connectors, config, env, SECRET } = this;
-            const loaders = yield this.getLoaders(request);
-            const baseOptions = {
+    async getGraphQLOptions(request) {
+        const { schema, models, utilities, services, connectors, config, env, SECRET } = this;
+        const loaders = await this.getLoaders(request);
+        const baseOptions = {
+            schema,
+            context: { request, connectors, models, loaders, utilities, services },
+            debug: env.NODE_ENV !== 'production'
+        };
+        if ('graphqlConfig' in config) {
+            return Object.assign({}, baseOptions, config.graphqlConfig({
                 schema,
-                context: { request, connectors, models, loaders, utilities, services },
-                debug: env.NODE_ENV !== 'production'
-            };
-            if ('graphqlConfig' in config) {
-                return Object.assign({}, baseOptions, config.graphqlConfig({
-                    schema,
-                    request,
-                    connectors,
-                    models,
-                    utilities,
-                    services,
-                    loaders,
-                    env,
-                    SECRET,
-                    auth: {
-                        isAuthenticated: !!request.user,
-                        user: request.user
-                    }
-                }));
-            }
-            return baseOptions;
-        });
+                request,
+                connectors,
+                models,
+                utilities,
+                services,
+                loaders,
+                env,
+                SECRET,
+                auth: {
+                    isAuthenticated: !!request.user,
+                    user: request.user
+                }
+            }));
+        }
+        return baseOptions;
     }
     /**
      * Get application loaders instances
      * @param  {Object} request HTTP request
      * @return {Object}         Loaders instances
      */
-    getLoaders(request) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { models, connectors, env, loaders } = this;
-            const loaderParams = Object.assign({}, request, env, connectors, models);
-            return (yield Promise.all(Object.entries(loaders).map(utils_1.instantiate(loaderParams)))).reduce(utils_1.mergeInstances, {});
-        });
+    async getLoaders(request) {
+        const { models, connectors, env, loaders } = this;
+        const loaderParams = Object.assign({}, request, env, connectors, models);
+        return (await Promise.all(Object.entries(loaders).map(utils_1.instantiate(loaderParams)))).reduce(utils_1.mergeInstances, {});
     }
     /**
      * Get GraphiQL configuration options
@@ -202,26 +187,24 @@ class Grial {
         }
         return { schema, execute: graphql_1.execute, subscribe: graphql_1.subscribe };
     }
-    addUser(request, response, next = null) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const token = request.headers['x-token'];
-            if (token) {
-                try {
-                    const { user } = jwt.verify(token, this.SECRET);
-                    request.user = user;
-                }
-                catch (err) {
-                    const refreshToken = request.headers['x-refresh-token'];
-                    const newTokens = yield this.auth.refreshToken(token, refreshToken, this.models, this.SECRET);
-                    if (newTokens.token && newTokens.refreshToken) {
-                        response.setHeader('Access-Control-Expose-Headers', ['x-token', 'x-refresh-token']);
-                        response.setHeader('x-token', newTokens.token);
-                        response.setHeader('x-refresh-token', newTokens.refreshToken);
-                    }
-                    request.user = newTokens.user;
-                }
+    async addUser(request, response, next = null) {
+        const token = request.headers['x-token'];
+        if (token) {
+            try {
+                const { user } = jwt.verify(token, this.SECRET);
+                request.user = user;
             }
-        });
+            catch (err) {
+                const refreshToken = request.headers['x-refresh-token'];
+                const newTokens = await this.auth.refreshToken(token, refreshToken, this.models, this.SECRET);
+                if (newTokens.token && newTokens.refreshToken) {
+                    response.setHeader('Access-Control-Expose-Headers', ['x-token', 'x-refresh-token']);
+                    response.setHeader('x-token', newTokens.token);
+                    response.setHeader('x-refresh-token', newTokens.refreshToken);
+                }
+                request.user = newTokens.user;
+            }
+        }
     }
     /**
      * Create the HTTP request handler
@@ -235,7 +218,7 @@ class Grial {
          * @param  {Function} next     Call the next middleware
          * @return {Function}          Request handler
          */
-        return (request, response, next = null) => __awaiter(this, void 0, void 0, function* () {
+        return async (request, response, next = null) => {
             // const { env } = this;
             const url = url_1.parse(request.url, true);
             const formatedURL = `${request.method.toUpperCase()} ${url.pathname}`;
@@ -243,13 +226,13 @@ class Grial {
             if (formatedURL === graphql) {
                 // add auth
                 if (this.SECRET) {
-                    yield this.addUser(request, response);
+                    await this.addUser(request, response);
                 }
                 try {
-                    const data = yield graphql_server_core_1.runHttpQuery([request, response], {
+                    const data = await graphql_server_core_1.runHttpQuery([request, response], {
                         method: request.method,
-                        options: yield this.getGraphQLOptions(request),
-                        query: request.method === 'POST' ? request.body || (yield micro_1.json(request)) : url.query
+                        options: await this.getGraphQLOptions(request),
+                        query: request.method === 'POST' ? request.body || (await micro_1.json(request)) : url.query
                     });
                     response.setHeader('Content-Type', 'application/json');
                     response.write(data);
@@ -269,7 +252,7 @@ class Grial {
             if (formatedURL === graphiql) {
                 const { query } = url;
                 try {
-                    const graphiqlString = yield graphql_server_module_graphiql_1.resolveGraphiQLString(query, this.getGraphiQLOptions({ query, request }), request);
+                    const graphiqlString = await graphql_server_module_graphiql_1.resolveGraphiQLString(query, this.getGraphiQLOptions({ query, request }), request);
                     response.setHeader('Content-Type', 'text/html');
                     response.write(graphiqlString);
                 }
@@ -286,7 +269,7 @@ class Grial {
             response.statusCode = 404;
             response.statusMessage = 'Not Found';
             return response.end();
-        });
+        };
     }
 }
 exports.Grial = Grial;

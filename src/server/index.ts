@@ -14,6 +14,7 @@ import { json } from 'micro';
 // API layer
 import { getResolvers } from './api/resolvers';
 import { getSchema } from './api/schema';
+import { getDirectiveResolvers } from './api/directiveResolvers';
 import { instantiate, mergeInstances, getConfig, getAuth, getPrivateKey } from '../utils';
 
 // Business logic layer
@@ -87,7 +88,8 @@ export class Grial {
     // create schema
     const resolvers = await getResolvers(BASE_PATH);
     const typeDefs = await getSchema(BASE_PATH);
-    const schema = makeExecutableSchema({ typeDefs, resolvers });
+    const directiveResolvers = await getDirectiveResolvers(BASE_PATH);
+    const schema = makeExecutableSchema({ typeDefs, resolvers, directiveResolvers });
     this.schema = schema;
 
     // create connectors
@@ -105,13 +107,9 @@ export class Grial {
     )).reduce(mergeInstances, {});
     this.models = instancedModels;
 
-    // get loaders
-    this.loaders = await getLoaders(BASE_PATH);
-    const instancedLoaders = this.getLoaders();
-
     // create utility
     const utilities = await getUtilities(BASE_PATH);
-    const utilityParams = Object.assign({}, {env: this.env}, instancedConnectors, instancedModels, instancedLoaders);
+    const utilityParams = Object.assign({}, {env: this.env}, instancedConnectors, instancedModels);
     const instancedUtility = (await Promise.all(
       Object.entries(utilities).map(<any>instantiate(utilityParams))
     )).reduce(mergeInstances, {});
@@ -119,11 +117,14 @@ export class Grial {
 
     // create service
     const services = await getServices(BASE_PATH);
-    const servicesParams = Object.assign({}, {env: this.env}, instancedConnectors, instancedModels, instancedUtility, instancedLoaders);
+    const servicesParams = Object.assign({}, {env: this.env}, instancedConnectors, instancedModels, instancedUtility);
     const instancedServices = (await Promise.all(
       Object.entries(services).map(<any>instantiate(servicesParams))
     )).reduce(mergeInstances, {});
     this.services = instancedServices;
+
+    // get loaders
+    this.loaders = await getLoaders(BASE_PATH);
 
     this.context = {
       connectors: this.connectors,

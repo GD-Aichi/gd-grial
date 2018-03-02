@@ -1,12 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 // native
 const os = require("os");
@@ -17,27 +9,41 @@ const util_1 = require("util");
 const readFile = util_1.promisify(fs.readFile);
 const readdir = util_1.promisify(fs.readdir);
 const stat = util_1.promisify(fs.stat);
+// https://gist.github.com/kethinov/6658166
+// List all files in a directory in Node.js recursively in a synchronous fashion
+const walkSync = (dir, filelist = []) => {
+    const files = fs.readdirSync(dir);
+    files.forEach((file) => {
+        if (fs.statSync(dir + file).isDirectory()) {
+            filelist = walkSync(dir + file + '/', filelist);
+        }
+        else {
+            filelist.push(file);
+        }
+    });
+    return filelist;
+};
 // Returns only graphql files from a folder
-const getSchemaFiles = (folder) => __awaiter(this, void 0, void 0, function* () {
-    const files = (yield readdir(path_1.resolve(folder))) || [];
+const getSchemaFiles = async (folder) => {
+    const files = (await readdir(path_1.resolve(folder))) || [];
     return files
         .map((file) => folder + '/' + file)
-        .filter((file) => __awaiter(this, void 0, void 0, function* () { return (yield stat(file)).isFile(); }))
+        .filter(async (file) => (await stat(file)).isFile())
         .filter((file) => file.endsWith('.gql') || file.endsWith('.graphql'));
-});
+};
 // Returns concatenated schemas content
-const getSchemasContent = (folder) => __awaiter(this, void 0, void 0, function* () {
-    const files = yield getSchemaFiles(path_1.resolve(folder));
-    const schemas = yield Promise.all(files.map((file) => __awaiter(this, void 0, void 0, function* () { return readFile(file, 'utf8'); })));
+const getSchemasContent = async (folder) => {
+    const files = await getSchemaFiles(path_1.resolve(folder));
+    const schemas = await Promise.all(files.map(async (file) => readFile(file, 'utf8')));
     return schemas.length > 0 && schemas.reduce((previous, current) => previous + os.EOL + current);
-});
-exports.getSchema = (BASE_PATH) => __awaiter(this, void 0, void 0, function* () {
+};
+exports.getSchema = async (BASE_PATH) => {
     try {
-        let schema = yield getSchemasContent(path_1.resolve(`${BASE_PATH}`));
+        let schema = await getSchemasContent(path_1.resolve(`${BASE_PATH}`));
         if (schema && schema.length > 0) {
             return schema;
         }
-        schema = yield getSchemasContent(path_1.resolve(`${BASE_PATH}/schemas/`));
+        schema = await getSchemasContent(path_1.resolve(`${BASE_PATH}/schemas/`));
         if (schema && schema.length > 0) {
             return schema;
         }
@@ -49,5 +55,5 @@ exports.getSchema = (BASE_PATH) => __awaiter(this, void 0, void 0, function* () 
         }
         throw error;
     }
-});
+};
 //# sourceMappingURL=schema.js.map

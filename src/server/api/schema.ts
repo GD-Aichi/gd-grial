@@ -9,6 +9,20 @@ const readFile = promisify(fs.readFile);
 const readdir = promisify(fs.readdir);
 const stat = promisify(fs.stat);
 
+// https://gist.github.com/kethinov/6658166
+// List all files in a directory in Node.js recursively in a synchronous fashion
+const walkSync = (dir: string, filelist: string[] = []): string[] => {
+  const files: string[] = fs.readdirSync(dir);
+  files.forEach((file: string) => {
+    if (fs.statSync(dir + file).isDirectory()) {
+      filelist = walkSync(dir + file + '/', filelist);
+    } else {
+      filelist.push(file);
+    }
+  });
+  return filelist;
+};
+
 // Returns only graphql files from a folder
 const getSchemaFiles = async (folder: string) => {
   const files: string[] = (await readdir(resolve(folder))) || [];
@@ -38,10 +52,10 @@ export const getSchema = async (BASE_PATH: string) => {
       return schema;
     }
 
-    throw new ReferenceError('The file `./schema.gql` or `./schema.graphql` is required.')
+    throw new ReferenceError('The file `./schema.gql` or `./schema.graphql` is required.');
   } catch (error) {
     if (error.code === 'ENOENT') {
-      throw new ReferenceError('The file `./schema.gql` or `./schema.graphql` is required.')
+      throw new ReferenceError('The file `./schema.gql` or `./schema.graphql` is required.');
     }
     throw error;
   }
