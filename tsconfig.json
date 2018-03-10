@@ -1,4 +1,3 @@
-
 {
   "compilerOptions": {
     "experimentalDecorators": true,
@@ -16,10 +15,7 @@
     "declaration": true,
     "removeComments": false
   },
-  "include": [
-    "src/index.ts",
-    "src/**/*",
-    "packages/**/*"
-  ],
+  "files": ["typings.d.ts"],
+  "include": ["src/index.ts", "src/**/*", "packages/**/*"],
   "exclude": ["node_modules", "dist"]
 }

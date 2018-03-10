@@ -5,10 +5,15 @@ const os = require("os");
 const fs = require("fs");
 const path_1 = require("path");
 const util_1 = require("util");
+//import * as mergeGraphqlSchemas from 'merge-graphql-schemas';
+//import { fileLoader, mergeTypes } from 'merge-graphql-schemas';
+const merge_graphql_schemas_1 = require("merge-graphql-schemas");
 // promisified
 const readFile = util_1.promisify(fs.readFile);
 const readdir = util_1.promisify(fs.readdir);
 const stat = util_1.promisify(fs.stat);
+//const fileLoader = mergeGraphqlSchemas.fileLoader;
+//const mergeTypes = mergeGraphqlSchemas.mergeTypes;
 // https://gist.github.com/kethinov/6658166
 // List all files in a directory in Node.js recursively in a synchronous fashion
 const walkSync = (dir, filelist = []) => {
@@ -37,13 +42,17 @@ const getSchemasContent = async (folder) => {
     const schemas = await Promise.all(files.map(async (file) => readFile(file, 'utf8')));
     return schemas.length > 0 && schemas.reduce((previous, current) => previous + os.EOL + current);
 };
+const getSchemaMerge = async (folder) => {
+    const typesArray = merge_graphql_schemas_1.fileLoader(folder, { recursive: true });
+    return merge_graphql_schemas_1.mergeTypes(typesArray, { all: true });
+};
 exports.getSchema = async (BASE_PATH) => {
     try {
         let schema = await getSchemasContent(path_1.resolve(`${BASE_PATH}`));
         if (schema && schema.length > 0) {
             return schema;
         }
-        schema = await getSchemasContent(path_1.resolve(`${BASE_PATH}/schemas/`));
+        schema = await getSchemaMerge(path_1.resolve(`${BASE_PATH}/schemas/`));
         if (schema && schema.length > 0) {
             return schema;
         }
