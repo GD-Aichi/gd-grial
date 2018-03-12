@@ -3,7 +3,7 @@ import { fileLoader, mergeResolvers } from 'merge-graphql-schemas';
 
 export const getResolvers = async (BASE_PATH: string) => {
   try {
-    const typesArray = fileLoader(resolve(`${BASE_PATH}/resolvers`));
+    const typesArray = fileLoader(resolve(`${BASE_PATH}/resolvers`), { recursive: false });
     return mergeResolvers(typesArray);
   } catch (error) {
     if (error.code === 'MODULE_NOT_FOUND') {

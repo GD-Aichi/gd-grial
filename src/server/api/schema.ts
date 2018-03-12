@@ -9,22 +9,6 @@ import { fileLoader, mergeTypes } from 'merge-graphql-schemas';
 const readFile = promisify(fs.readFile);
 const readdir = promisify(fs.readdir);
 const stat = promisify(fs.stat);
-//const fileLoader = mergeGraphqlSchemas.fileLoader;
-//const mergeTypes = mergeGraphqlSchemas.mergeTypes;
-
-// https://gist.github.com/kethinov/6658166
-// List all files in a directory in Node.js recursively in a synchronous fashion
-const walkSync = (dir: string, filelist: string[] = []): string[] => {
-  const files: string[] = fs.readdirSync(dir);
-  files.forEach((file: string) => {
-    if (fs.statSync(dir + file).isDirectory()) {
-      filelist = walkSync(dir + file + '/', filelist);
-    } else {
-      filelist.push(file);
-    }
-  });
-  return filelist;
-};
 
 // Returns only graphql files from a folder
 const getSchemaFiles = async (folder: string) => {
